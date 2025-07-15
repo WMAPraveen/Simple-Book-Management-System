@@ -1,12 +1,12 @@
 import { AppBar, Box, IconButton, InputBase, Toolbar, Typography, Menu, MenuItem } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-// import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-// import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const NavBar = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const navigate = useNavigate();
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -14,6 +14,11 @@ const NavBar = () => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleSignIn = () => {
+    handleMenuClose();
+    navigate('/auth');
   };
 
   return (
@@ -29,7 +34,11 @@ const NavBar = () => {
           </IconButton>
         </Box>
         {['HOME', 'LIBRARY', 'HELP & SUPPORT'].map((item) => (
-          <Typography key={item} sx={{ margin: '0 20px', color: '#000', cursor: 'pointer', '&:hover': { color: '#ff4081' } }}>
+          <Typography
+            key={item}
+            sx={{ margin: '0 20px', color: '#000', cursor: 'pointer', '&:hover': { color: '#ff4081' } }}
+            onClick={() => navigate(item === 'HOME' ? '/' : item === 'LIBRARY' ? '/library' : '/help')}
+          >
             {item}
           </Typography>
         ))}
@@ -38,7 +47,7 @@ const NavBar = () => {
         </IconButton>
         <Menu
           anchorEl={anchorEl}
-          sx={{ml:-10, mt: 1 }}
+          sx={{ ml: -10, mt: 1 }}
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
           anchorOrigin={{
@@ -57,9 +66,9 @@ const NavBar = () => {
             </Box>
           </MenuItem>
           <MenuItem onClick={handleMenuClose}>
-           Settings
+            Settings
           </MenuItem>
-          <MenuItem onClick={handleMenuClose}>
+          <MenuItem onClick={handleSignIn}>
             Sign in
           </MenuItem>
         </Menu>
